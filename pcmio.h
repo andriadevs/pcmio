@@ -82,19 +82,18 @@ typedef struct {
     char16_t: pcmio_newcell16,\
     char8_t: pcmio_newcell8)\
     (c, fg_r, fg_g, fg_b, fg_a, bg_r, bg_g, bg_b, bg_a)
-static PCMCell pcmio_newcellascii(const char c, 
+PCMCell pcmio_newcellascii(const char c, 
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a, 
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a);
-static PCMCell pcmio_newcell32(const char32_t c, 
+PCMCell pcmio_newcell32(const char32_t c, 
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a, 
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a);
-static PCMCell pcmio_newcell16(const char16_t c, 
+PCMCell pcmio_newcell16(const char16_t c, 
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a, 
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a);
-static PCMCell pcmio_newcell8(const char8_t c, 
+PCMCell pcmio_newcell8(const char8_t c, 
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a, 
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a);
-
 
 /**
 * Gets the character of a single cell in the given PCMFile instance.
@@ -103,7 +102,7 @@ unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a);
 * @param y Y-coordinate of the cell.
 * @return UTF-32 character stored in the cell with the given coordinates.
 */
-static char32_t pcmio_getchar(PCMFile* pcm, const unsigned short x, const unsigned short y);
+char32_t pcmio_getchar(PCMFile* pcm, const unsigned short x, const unsigned short y);
 
 /**
 * Sets the character of a single cell in the given PCMFile instance.
@@ -118,10 +117,10 @@ static char32_t pcmio_getchar(PCMFile* pcm, const unsigned short x, const unsign
     char16_t: pcmio_setchar16,\
     char8_t: pcmio_setchar8)\
     (pcm, x, y, c)
-static void pcmio_setcharascii(PCMFile* pcm, const unsigned short x, const unsigned short y, const char c);
-static void pcmio_setchar32(PCMFile* pcm, const unsigned short x, const unsigned short y, const char32_t c);
-static void pcmio_setchar16(PCMFile* pcm, const unsigned short x, const unsigned short y, const char16_t c);
-static void pcmio_setchar8(PCMFile* pcm, const unsigned short x, const unsigned short y, const char8_t c);
+void pcmio_setcharascii(PCMFile* pcm, const unsigned short x, const unsigned short y, const char c);
+void pcmio_setchar32(PCMFile* pcm, const unsigned short x, const unsigned short y, const char32_t c);
+void pcmio_setchar16(PCMFile* pcm, const unsigned short x, const unsigned short y, const char16_t c);
+void pcmio_setchar8(PCMFile* pcm, const unsigned short x, const unsigned short y, const char8_t c);
 
 /**
 * Gets the foreground color of a single cell in the given PCMFile instance.
@@ -130,7 +129,7 @@ static void pcmio_setchar8(PCMFile* pcm, const unsigned short x, const unsigned 
 * @param y Y-coordinate of the cell.
 * @return RGBA values of the foreground color of the cell at the given coordinates.
 */
-static PCMColorRGBA pcmio_getfg(PCMFile* pcm, const unsigned short x, const unsigned short y);
+PCMColorRGBA pcmio_getfg(PCMFile* pcm, const unsigned short x, const unsigned short y);
 
 /**
 * Sets the foreground color of a single cell in the given PCMFile instance.
@@ -142,7 +141,7 @@ static PCMColorRGBA pcmio_getfg(PCMFile* pcm, const unsigned short x, const unsi
 * @param fg_b Foreground color blue component.
 * @param fg_a Foreground color alpha component.
 */
-static void pcmio_setfg(PCMFile* pcm, const unsigned short x, const unsigned short y,
+void pcmio_setfg(PCMFile* pcm, const unsigned short x, const unsigned short y,
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a);
 
 /**
@@ -152,7 +151,7 @@ unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a);
 * @param y Y-coordinate of the cell.
 * @return RGBA values of the background color of the cell at the given coordinates.
 */
-static PCMColorRGBA pcmio_getbg(PCMFile* pcm, const unsigned short x, const unsigned short y);
+PCMColorRGBA pcmio_getbg(PCMFile* pcm, const unsigned short x, const unsigned short y);
 
 /**
 * Sets the background color of a single cell in the given PCMFile instance.
@@ -164,7 +163,7 @@ static PCMColorRGBA pcmio_getbg(PCMFile* pcm, const unsigned short x, const unsi
 * @param bg_b Background color blue component.
 * @param bg_a Background color alpha component.
 */
-static void pcmio_setbg(PCMFile* pcm, const unsigned short x, const unsigned short y,
+void pcmio_setbg(PCMFile* pcm, const unsigned short x, const unsigned short y,
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a);
 
 /**
@@ -174,32 +173,32 @@ unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a);
 * @param max_color Maximum color value of the new PCMFile instance, must be less than 256.
 * @return Pointer to the newly-created PCMFile instance.
 */
-static PCMFile* pcmio_new(const unsigned short width, const unsigned short height, const unsigned char max_color);
+PCMFile* pcmio_new(const unsigned short width, const unsigned short height, const unsigned char max_color);
 
 /**
 * Serializes a PCMFile instance with the given filename.
 * @param pcm PCMFile instance to serialize. 
 * @param filename Name of the serialized .PCM file.
 */
-static void pcmio_write(PCMFile* pcm, char* filename);
+void pcmio_write(PCMFile* pcm, char* filename);
 
 /**
 * Deserializes a .PCM file into a PCMFile instance.
 * @param path Path of the .PCM file.
 */
-static PCMFile* pcmio_open(const char* path);
+PCMFile* pcmio_open(const char* path);
 
 /**
 * Frees memory allocated by a PCMFile.
 * @param pcm PCMFile instance to close.
 */
-static void pcmio_close(PCMFile* pcm);
+void pcmio_close(PCMFile* pcm);
 
 /**
 * Prints information about a PCMFile instance for debugging.
 * @param pcm PCMFile instance to print information for.
 */
-static void pcmio_print(PCMFile* pcm);
+void pcmio_print(PCMFile* pcm);
 
 #ifdef __cplusplus
 }
@@ -214,7 +213,7 @@ static void pcmio_print(PCMFile* pcm);
 
 #define PCMHead "P-1"
 
-static PCMCell pcmio_newcellascii(const char c, 
+PCMCell pcmio_newcellascii(const char c, 
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a, 
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) {
     char32_t c_32;
@@ -230,7 +229,7 @@ unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) 
     return new_cell;
 }
 
-static PCMCell pcmio_newcell32(const char32_t c, 
+PCMCell pcmio_newcell32(const char32_t c, 
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a, 
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) {
     PCMCell new_cell = {c,
@@ -241,7 +240,7 @@ unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) 
     return new_cell;
 }
 
-static PCMCell pcmio_newcell16(const char16_t c, 
+PCMCell pcmio_newcell16(const char16_t c, 
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a, 
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) {
     char* mbc = (char*) malloc(2);
@@ -261,7 +260,7 @@ unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) 
     return new_cell;
 }
 
-static PCMCell pcmio_newcell8(const char8_t c, 
+PCMCell pcmio_newcell8(const char8_t c, 
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a, 
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) {
     char* mbc = (char*) malloc(1);
@@ -281,11 +280,11 @@ unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) 
     return new_cell;
 }
 
-static char32_t pcmio_getchar(PCMFile* pcm, const unsigned short x, const unsigned short y) {
+char32_t pcmio_getchar(PCMFile* pcm, const unsigned short x, const unsigned short y) {
     return pcm->cells[(y * pcm->width) + x].character;
 }
 
-static void pcmio_setcharascii(PCMFile* pcm, const unsigned short x, const unsigned short y, const char c) {
+void pcmio_setcharascii(PCMFile* pcm, const unsigned short x, const unsigned short y, const char c) {
     char32_t c_32;
     mbstate_t state = {0};
 
@@ -294,11 +293,11 @@ static void pcmio_setcharascii(PCMFile* pcm, const unsigned short x, const unsig
     pcm->cells[(y * pcm->width) + x].character = c_32;
 }
 
-static void pcmio_setchar32(PCMFile* pcm, const unsigned short x, const unsigned short y, const char32_t c) {
+void pcmio_setchar32(PCMFile* pcm, const unsigned short x, const unsigned short y, const char32_t c) {
     pcm->cells[(y * pcm->width) + x].character = c;
 }
 
-static void pcmio_setchar16(PCMFile* pcm, const unsigned short x, const unsigned short y, const char16_t c) {
+void pcmio_setchar16(PCMFile* pcm, const unsigned short x, const unsigned short y, const char16_t c) {
     char* mbc = (char*) malloc(2);
     mbstate_t state = {0};
     c16rtomb(mbc, c, &state);
@@ -311,7 +310,7 @@ static void pcmio_setchar16(PCMFile* pcm, const unsigned short x, const unsigned
     pcm->cells[(y * pcm->width) + x].character = c_32;
 }
 
-static void pcmio_setchar8(PCMFile* pcm, const unsigned short x, const unsigned short y, const char8_t c) {
+void pcmio_setchar8(PCMFile* pcm, const unsigned short x, const unsigned short y, const char8_t c) {
     char* mbc = (char*) malloc(1);
     mbstate_t state = {0};
     c8rtomb(mbc, c, &state);
@@ -324,30 +323,30 @@ static void pcmio_setchar8(PCMFile* pcm, const unsigned short x, const unsigned 
     pcm->cells[(y * pcm->width) + x].character = c_32;
 }
 
-static PCMColorRGBA pcmio_getfg(PCMFile* pcm, const unsigned short x, const unsigned short y) {
+PCMColorRGBA pcmio_getfg(PCMFile* pcm, const unsigned short x, const unsigned short y) {
     return pcm->cells[(y * pcm->width) + x].foreground;
 }
 
 
-static void pcmio_setfg(PCMFile* pcm, const unsigned short x, const unsigned short y,
+void pcmio_setfg(PCMFile* pcm, const unsigned short x, const unsigned short y,
 unsigned char fg_r, unsigned char fg_g, unsigned char fg_b, unsigned char fg_a) {
     PCMColorRGBA new_color = {fg_r, fg_g, fg_b, fg_a};
 
     pcm->cells[(y * pcm->width) + x].foreground = new_color;
 }
 
-static PCMColorRGBA pcmio_getbg(PCMFile* pcm, const unsigned short x, const unsigned short y) {
+PCMColorRGBA pcmio_getbg(PCMFile* pcm, const unsigned short x, const unsigned short y) {
     return pcm->cells[(y * pcm->width) + x].background;
 }
 
-static void pcmio_setbg(PCMFile* pcm, const unsigned short x, const unsigned short y,
+void pcmio_setbg(PCMFile* pcm, const unsigned short x, const unsigned short y,
 unsigned char bg_r, unsigned char bg_g, unsigned char bg_b, unsigned char bg_a) {
     PCMColorRGBA new_color = {bg_r, bg_g, bg_b, bg_a};
 
     pcm->cells[(y * pcm->width) + x].foreground = new_color;
 }
 
-static PCMFile* pcmio_new(const unsigned short width, const unsigned short height, const unsigned char max_color) {
+PCMFile* pcmio_new(const unsigned short width, const unsigned short height, const unsigned char max_color) {
     PCMFile* pcm = (PCMFile*) malloc(sizeof(PCMFile));
     
     pcm->width = width;
@@ -359,7 +358,7 @@ static PCMFile* pcmio_new(const unsigned short width, const unsigned short heigh
     return pcm;
 }
 
-static void pcmio_write(PCMFile* pcm, char* filename) {
+void pcmio_write(PCMFile* pcm, char* filename) {
     FILE* fp = fopen(filename, "wb");
     char head[] = PCMHead;
 
@@ -374,7 +373,7 @@ static void pcmio_write(PCMFile* pcm, char* filename) {
     fclose(fp);
 }
 
-static PCMFile* pcmio_open(const char* path) {
+PCMFile* pcmio_open(const char* path) {
     FILE* fp = fopen(path, "rb");
     PCMFile* pcm = (PCMFile*) malloc(sizeof(PCMFile));
 
@@ -389,13 +388,13 @@ static PCMFile* pcmio_open(const char* path) {
     return pcm;
 }
 
-static void pcmio_close(PCMFile* pcm) {
+void pcmio_close(PCMFile* pcm) {
     free(pcm->cells);
 
     free(pcm);
 }
 
-static void pcmio_print(PCMFile* pcm) {
+void pcmio_print(PCMFile* pcm) {
     printf(".PCM File\nWidth: %i | Height: %i\n", pcm->width, pcm->height);
 
     for (int i = 0; i < pcm->width * pcm->height; i++) {
