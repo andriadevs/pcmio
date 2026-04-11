@@ -6,13 +6,14 @@
 #define PCMIO_IMPLEMENTATION
 #include "pcmio.h"
 
-#define WIDTH 100
-#define HEIGHT 100
+#define WIDTH 1000
+#define HEIGHT 1000
 
 int main() {
     setlocale(LC_ALL, "en_US.utf8");
 
     printf("Create/Write Tests:\n");
+    fflush(stdout);
 
     // Create .PCM File Test
     PCMFile* pcm = pcmio_new(WIDTH, HEIGHT, 255);
@@ -107,6 +108,7 @@ int main() {
     printf("Create/Write Tests Successful\n");
     printf(" ----- \n");
     printf("Open Tests:\n");
+    fflush(stdout);
 
     // Open .PCM File Test
 
@@ -165,6 +167,7 @@ int main() {
     printf("Open Tests Successful\n");
     printf(" ----- \n");
     printf("Read Tests:\n");
+    fflush(stdout);
 
     // Read .PCM Buffer Test
 
@@ -172,7 +175,7 @@ int main() {
     fseek(fp, 0L, SEEK_END);
     unsigned long file_size = ftell(fp);
     rewind(fp);
-    char buffer[file_size];
+    char* buffer = (char*) malloc(sizeof(char) * file_size);
     fread(buffer, file_size, 1, fp);
     fclose(fp);
 
@@ -229,6 +232,7 @@ int main() {
     }
 
     printf("Read Tests Successful\n");
+    fflush(stdout);
 
     return 0;
 }
