@@ -232,7 +232,23 @@ int main() {
     }
 
     printf("Read Tests Successful\n");
+    printf(" ----- \n");
+    printf("Resize/Copy Tests:\n");
     fflush(stdout);
+
+    // Read .PCM Buffer Test
+
+    PCMFile* pcm4 = pcmio_resize(pcm2, 0, HEIGHT - 1, 2, 2);
+    pcmio_print(pcm4);
+
+    PCMFile* pcm5 = pcmio_copy(pcm4);
+    pcmio_print(pcm5);
+
+    pcmio_close(pcm);
+    pcmio_close(pcm2);
+    pcmio_close(pcm3);
+    pcmio_close(pcm4);
+    pcmio_close(pcm5);
 
     return 0;
 }

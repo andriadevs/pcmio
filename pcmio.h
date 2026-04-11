@@ -168,6 +168,24 @@ void pcmio_setbg(PCMFile* pcm, const unsigned int x, const unsigned int y,
 uint8_t bg_r, uint8_t bg_g, uint8_t bg_b, uint8_t bg_a);
 
 /**
+* Creates a copy of the given PCMFile instance, leaving the original PCMFile instance unaffected.
+* @param pcm Pointer to the PCMFile instance to create a copy of.
+* @return Pointer to the copy of the original PCMFile instance.
+*/
+PCMFile* pcmio_copy(const PCMFile* pcm);
+
+/**
+* Creates a resized copy of the given PCMFile instance, leaving the original PCMFile instance unaffected.
+* @param pcm Pointer to the PCMFile instance to create a resized copy of.
+* @param x X-coordinate of the top-left cell to crop from.
+* @param y Y-coordinate of the top-left cell to crop from.
+* @param width Width, in cells/characters, of the resized copy.
+* @param height Height, in cells/characters, of the resized copy.
+* @return Pointer to the resized copy of the original PCMFile instance.
+*/
+PCMFile* pcmio_resize(const PCMFile* pcm, const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height);
+
+/**
 * Creates a new PCMFile instance with the given width, height, and max color.
 * @param width Width, in cells/characters, of the new PCMFile instance.
 * @param height Height, in cells/characters, of the new PCMFile instance.
@@ -364,6 +382,45 @@ PCMFile* pcmio_new(const unsigned int width, const unsigned int height, const un
     pcm->cells = (PCMCell*) calloc(width * height, sizeof(PCMCell));
 
     return pcm;
+}
+
+PCMFile* pcmio_copy(const PCMFile* pcm) {
+    PCMFile* new_pcm = (PCMFile*) malloc(sizeof(PCMFile));
+
+    new_pcm->width = pcm->width;
+    new_pcm->height = pcm->height;
+    new_pcm->max_color = pcm->max_color;
+
+    new_pcm->cells = (PCMCell*) calloc(pcm->width * pcm->height, sizeof(PCMCell));
+    memcpy((void*) new_pcm->cells, (void*) pcm->cells, sizeof(PCMCell) * pcm->width * pcm->height);
+    
+    return new_pcm;
+}
+
+PCMFile* pcmio_resize(const PCMFile* pcm, const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height) {
+    PCMFile* new_pcm = (PCMFile*) malloc(sizeof(PCMFile));
+
+    new_pcm->width = width;
+    new_pcm->height = height;
+    new_pcm->max_color = pcm->max_color;
+
+    new_pcm->cells = (PCMCell*) calloc(width * height, sizeof(PCMCell));
+
+    for (unsigned int new_y = 0; new_y < height; new_y++) {
+        if (y + new_y >= pcm->height) {
+            break;
+        }
+
+        for (unsigned int new_x = 0; new_x < width; new_x++) {
+            if (x + new_x >= pcm->width) {
+                break;
+            }
+
+            new_pcm->cells[new_y * height + new_x] = pcm->cells[(y + new_y * pcm->width) + x + new_x];
+        }
+    }
+    
+    return new_pcm;
 }
 
 void pcmio_write(PCMFile* pcm, char* path) {
