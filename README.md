@@ -13,7 +13,7 @@ PCMFile instances can be created with pcmio_new() and modified/read with either 
 Use pcmio_write() to write PCMFile instances to file or pcmio_open() to read a .PCM file into a new PCMFile instance.
 
 ## Credits:
-Alexandria Hollingsworth (andriadevs)
+A. Hollingsworth (andriadevs)
 
 ## Changelog:
 * n/a
