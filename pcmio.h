@@ -236,6 +236,7 @@ void pcmio_print(PCMFile* pcm);
 #include <stdio.h> // fopen(), fseek(), fwrite(), fread(), fclose()
 #include <stdlib.h> // malloc(), free()
 #include <string.h> // memcpy()
+#include <assert.h> // assert()
 
 #define PCMHead "P-1"
 
