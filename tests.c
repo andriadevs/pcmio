@@ -6,13 +6,18 @@
 #define PCMIO_IMPLEMENTATION
 #include "pcmio.h"
 
+#define WIDTH 100
+#define HEIGHT 100
+
 int main() {
     setlocale(LC_ALL, "en_US.utf8");
 
+    printf("Create/Write Tests:\n");
+
     // Create .PCM File Test
-    PCMFile* pcm = pcmio_new(4, 4, 255);
+    PCMFile* pcm = pcmio_new(WIDTH, HEIGHT, 255);
     
-    for (int i = 0; i < pcm->width * pcm->height; i++) {
+    for (unsigned long i = 0; i < pcm->width * pcm->height; i++) {
         if (pcm->cells[i].character != '\0') {
             return 1;
         }
@@ -95,27 +100,29 @@ int main() {
         }
     }
 
-    pcmio_print(pcm);
+    //pcmio_print(pcm);
 
     pcmio_write(pcm, "./test.pcm");
 
     printf("Create/Write Tests Successful\n");
+    printf(" ----- \n");
+    printf("Open Tests:\n");
 
-    // Read .PCM File Test
+    // Open .PCM File Test
 
     PCMFile* pcm2 = pcmio_open("./test.pcm");
 
-    pcmio_print(pcm2);
+    //pcmio_print(pcm2);
 
-    if (pcm2->width != 4) {
+    if (pcm2->width != WIDTH) {
         return 1;
     }
 
-    if (pcm2->height != 4) {
+    if (pcm2->height != HEIGHT) {
         return 1;
     }
 
-    for (int i = 0; i < pcm2->width * pcm2->height; i++) {
+    for (unsigned long i = 0; i < pcm2->width * pcm2->height; i++) {
         PCMColorRGBA new_color = {255, 255, 255, 255};
 
         if (pcm2->cells[i].character != U'ß') {
@@ -151,6 +158,72 @@ int main() {
         }
 
         if (pcm2->cells[i].background.a != new_color.a) {
+            return 1;
+        }
+    }
+
+    printf("Open Tests Successful\n");
+    printf(" ----- \n");
+    printf("Read Tests:\n");
+
+    // Read .PCM Buffer Test
+
+    FILE* fp = fopen("./test.pcm", "rb");
+    fseek(fp, 0L, SEEK_END);
+    unsigned long file_size = ftell(fp);
+    rewind(fp);
+    char buffer[file_size];
+    fread(buffer, file_size, 1, fp);
+    fclose(fp);
+
+    PCMFile* pcm3 = pcmio_read(buffer);
+
+    //pcmio_print(pcm3);
+
+    if (pcm3->width != WIDTH) {
+        return 1;
+    }
+
+    if (pcm3->height != HEIGHT) {
+        return 1;
+    }
+
+    for (unsigned long i = 0; i < pcm3->width * pcm3->height; i++) {
+        PCMColorRGBA new_color = {255, 255, 255, 255};
+
+        if (pcm3->cells[i].character != U'ß') {
+            return 1;
+        }
+
+        if (pcm3->cells[i].foreground.r != new_color.r) {
+            return 1;
+        }
+
+        if (pcm3->cells[i].foreground.g != new_color.g) {
+            return 1;
+        }
+
+        if (pcm3->cells[i].foreground.b != new_color.b) {
+            return 1;
+        }
+
+        if (pcm3->cells[i].foreground.a != new_color.a) {
+            return 1;
+        }
+
+        if (pcm3->cells[i].background.r != new_color.r) {
+            return 1;
+        }
+
+        if (pcm3->cells[i].background.g != new_color.g) {
+            return 1;
+        }
+
+        if (pcm3->cells[i].background.b != new_color.b) {
+            return 1;
+        }
+
+        if (pcm3->cells[i].background.a != new_color.a) {
             return 1;
         }
     }
